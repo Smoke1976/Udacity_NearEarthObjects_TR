@@ -21,7 +21,7 @@ def cd_to_datetime(calendar_date):
 
         2020-Dec-31 12:00
 
-    This will become the Python object `datetime.datetime(2020, 12, 31, 12, 0)`.
+    This will become the Python object `datetime.datetime(2020, 12, 31, 12, 0)`
 
     :param calendar_date: A calendar date in YYYY-bb-DD hh:mm format.
     :return: A naive `datetime` corresponding to the given calendar date and time.
