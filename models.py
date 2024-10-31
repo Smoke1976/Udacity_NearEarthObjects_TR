@@ -49,7 +49,10 @@ class NearEarthObject:
         # and a missing diameter being represented by `float('nan')`.
         self.designation = designation if designation is not None else ''
         self.name = name if name is not None else None
-        self.diameter = float(diameter) if diameter is not None else float('nan')
+        if diameter is not None and diameter != '':
+            self.diameter = float(diameter)
+        else:
+            self.diameter = float('nan')
         self.hazardous = hazardous if hazardous is not None else False
         # Create an empty initial collection of linked approaches.
         self.approaches = []

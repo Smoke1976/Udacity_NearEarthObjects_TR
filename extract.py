@@ -28,8 +28,13 @@ def load_neos(neo_csv_path):
     neos = []
     with open(neo_csv_path, mode='r', newline='') as file:
         reader = csv.DictReader(file)
-        for neo in reader:
-            neos.append(NearEarthObject(designation=neo['pdes'], name=neo['name'], diameter = neo['diameter'], hazardous=neo['pha']))
+        for neo in reader:            
+            designation = neo['pdes']
+            name = neo['name'] if neo['name'] else None  # Set to None if missing
+            diameter = float(neo['diameter']) if neo['diameter'] else float('nan')  # Convert to float or NaN
+            hazardous = neo['pha'] == 'Y'
+            # Create a NEO instance and add to list
+            neos.append(NearEarthObject(designation=designation, name=name, diameter=diameter, hazardous=hazardous))   
     return neos
 
 
@@ -43,14 +48,28 @@ def load_approaches(cad_json_path):
     approaches = []
     with open(cad_json_path, 'r') as file:
         contents = json.load(file)
-        # Find the indices of 'des' and 'orbit_id' in the 'fields' list
+        
+        # Check if 'fields' exists and contains the required keys
+        if 'fields' not in contents or not all(key in contents['fields'] for key in ['des', 'cd', 'dist', 'v_rel']):
+            raise ValueError("Required fields are missing in the JSON data.")
+        
+        # Find the indices of 'des', 'cd', , 'v_rel' and 'dist' in the 'fields' list
         des_index = contents['fields'].index('des')
         cd_index = contents['fields'].index('cd')
         dist_index = contents['fields'].index('dist')
         v_rel_index = contents['fields'].index('v_rel')
         
         for cad in contents['data']:
-            approaches.append(CloseApproach(designation=cad[des_index], cad_time=cad[cd_index],\
-                distance=cad[dist_index],velocity=cad[v_rel_index]))
+            # Convert distance and velocity to float
+            distance = float(cad[dist_index]) if cad[dist_index] else float('nan')
+            velocity = float(cad[v_rel_index]) if cad[v_rel_index] else float('nan')
+            
+            # Create a CloseApproach instance and append to the list
+            approaches.append(CloseApproach(
+                designation=cad[des_index],
+                cad_time=cad[cd_index],
+                distance=distance,
+                velocity=velocity
+            ))            
 
     return approaches
