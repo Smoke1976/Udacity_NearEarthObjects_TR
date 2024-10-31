@@ -57,8 +57,8 @@ class NearEarthObject:
     @property
     def fullname(self):
         """Return a representation of the full name of this NEO."""
-        # TODO: Use self.designation and self.name to build a fullname for this object.         
-        return str(self.designation) + ' (' + str(self.name) + ')'
+        # TODO: Use self.designation and self.name to build a fullname for this object.
+        # return str(self.designation) + ' (' + str(self.name) + ')'
 
     def __str__(self):
         """Return `str(self)`."""
@@ -137,7 +137,7 @@ class CloseApproach:
         # The project instructions include one possibility. Peek at the __repr__
         # method for examples of advanced string formatting.
         return f"A CloseApproach for a {self.neo.fullname} happens or happend at {datetime_to_str(self.time)}" \
-            f" with a velocity of {self.velocity} km/s in a distance of {self.distance}! "
+            f" with a velocity of {self.velocity} km/s in a distance of {self.distance} au! "
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
