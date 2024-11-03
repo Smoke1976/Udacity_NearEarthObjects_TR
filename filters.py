@@ -191,7 +191,7 @@ def create_filters(
 
 def limit(iterator, n=None):
     """Produce a limited stream of values from an iterator.
-    
+
     If `n` is 0 or None, don't limit the iterator at all.
 
     :param iterator: An iterator of values.
