@@ -1,5 +1,4 @@
-"""A database encapsulating collections of near-Earth objects and their close
-approaches.
+"""A database encapsulating collections of NEOs and their approaches.
 
 A `NEODatabase` holds an interconnected data set of NEOs and close approaches.
 It provides methods to fetch an NEO by primary designation or by name, as well
@@ -15,13 +14,16 @@ You'll edit this file in Tasks 2 and 3.
 
 
 class NEODatabase:
-    """A database of near-Earth objects and their close approaches.
+    """
+    A database of near-Earth objects and their close approaches.
 
     A `NEODatabase` contains a collection of NEOs and a collection of close
     approaches. It additionally maintains a few auxiliary data structures to
     help fetch NEOs by primary designation or by name and to help speed up
     querying for close approaches that match criteria.
+
     """
+
     def __init__(self, neos, approaches):
         """Create a new `NEODatabase`.
 
@@ -90,8 +92,7 @@ class NEODatabase:
         return self.neo_by_name.get(name, None)
 
     def query(self, filters=()):
-        """Query close approaches to generate those that match a collection
-        of filters.
+        """Query close approaches to find matches with specified filters.
 
         This generates a stream of `CloseApproach` objects that match all of
         the provided filters.

@@ -1,5 +1,4 @@
-"""Provide filters for querying close approaches and limit the generated
-results.
+"""Provide filters for querying approaches and limit the generated results.
 
 The `create_filters` function produces a collection of objects that is used by
 the `query` method to generate a stream of `CloseApproach` objects that match
@@ -40,9 +39,9 @@ class AttributeFilter:
     Concrete subclasses can override the `get` classmethod to provide custom
     behavior to fetch a desired attribute from the given `CloseApproach`.
     """
+
     def __init__(self, op, value):
-        """Construct a new `AttributeFilter` from an binary predicate and a
-        reference value.
+        """Construct new `AttributeFilter` from bin. predicate and ref. value.
 
         The reference value will be supplied as the second (right-hand side)
         argument to the operator function. For example, an `AttributeFilter`
@@ -73,37 +72,69 @@ class AttributeFilter:
         raise UnsupportedCriterionError
 
     def __repr__(self):
+        """Return a string representation of the NEODatabase instance."""
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__},\
             value={self.value})"
 
 
 class DateFilter(AttributeFilter):
+    """Specifies the filter for a date of approaches."""
+
     @classmethod
     def get(cls, approach):
+        """Return the date of the approach.
+
+        Args: approach: An object with a `time` attribute that is a datetime
+        object.
+        """
         return approach.time.date()  # Assuming `time` is a datetime object
 
 
 class DistanceFilter(AttributeFilter):
+    """Specifies the filter for a distance range of approaches."""
+
     @classmethod
     def get(cls, approach):
+        """Return the distance of the approach.
+
+        Args: approach: An object with a `distance` attribute.
+        """
         return approach.distance
 
 
 class VelocityFilter(AttributeFilter):
+    """Specifies the filter for a velocity range of approaches."""
+
     @classmethod
     def get(cls, approach):
+        """Return the velocity of the approach.
+
+        Args: approach: An object with a `velocity` attribute.
+        """
         return approach.velocity
 
 
 class DiameterFilter(AttributeFilter):
+    """Specifies the filter for a distance of approaches."""
+
     @classmethod
     def get(cls, approach):
+        """Return the diameter of respective NEO.
+
+        Args: approach: An object including a NEO with 'diameter' attribute.
+        """
         return approach.neo.diameter  # Assuming `neo` is the NearEarthObject
 
 
 class HazardousFilter(AttributeFilter):
+    """Specifies the filter for a distance of approaches."""
+
     @classmethod
     def get(cls, approach):
+        """Return the hazardousness of respective NEO.
+
+        Args: approach: An object including a NEO with 'hazardous' attribute.
+        """
         return approach.neo.hazardous
 
 
@@ -113,8 +144,8 @@ def create_filters(
         velocity_min=None, velocity_max=None,
         diameter_min=None, diameter_max=None,
         hazardous=None):
-
     """Create a collection of filters from user-specified criteria.
+
     :param date: A `date` on which a matching `CloseApproach` (CA) occurs.
     :param start_date: A `date` on or after which a matching CA occurs.
     :param end_date: A `date` on or before which a matching CA occurs.
@@ -132,7 +163,6 @@ def create_filters(
         potentially hazardous.
     :return: A collection of filters for use with `query`.
     """
-
     filters = []
 
     if date is not None:
@@ -161,6 +191,7 @@ def create_filters(
 
 def limit(iterator, n=None):
     """Produce a limited stream of values from an iterator.
+    
     If `n` is 0 or None, don't limit the iterator at all.
 
     :param iterator: An iterator of values.
